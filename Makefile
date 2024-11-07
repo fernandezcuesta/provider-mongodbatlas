@@ -1,8 +1,8 @@
 # ====================================================================================
 # Setup Project
 
-PROJECT_NAME ?= upjet-provider-template
-PROJECT_REPO ?= github.com/upbound/$(PROJECT_NAME)
+PROJECT_NAME ?= provider-mongodbatlas
+PROJECT_REPO ?= github.com/crossplane-contrib/$(PROJECT_NAME)
 
 export TERRAFORM_VERSION ?= 1.5.7
 
@@ -10,12 +10,12 @@ export TERRAFORM_VERSION ?= 1.5.7
 # licensed under BSL, which is not permitted.
 TERRAFORM_VERSION_VALID := $(shell [ "$(TERRAFORM_VERSION)" = "`printf "$(TERRAFORM_VERSION)\n1.6" | sort -V | head -n1`" ] && echo 1 || echo 0)
 
-export TERRAFORM_PROVIDER_SOURCE ?= hashicorp/null
-export TERRAFORM_PROVIDER_REPO ?= https://github.com/hashicorp/terraform-provider-null
-export TERRAFORM_PROVIDER_VERSION ?= 3.2.2
-export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-null
+export TERRAFORM_PROVIDER_SOURCE ?= terraform-providers/mongodbatlas
+export TERRAFORM_PROVIDER_REPO ?= https://github.com/mongodb/terraform-provider-mongodbatlas
+export TERRAFORM_PROVIDER_VERSION ?= 1.21.4
+export TERRAFORM_PROVIDER_DOWNLOAD_NAME ?= terraform-provider-mongodbatlas
 export TERRAFORM_PROVIDER_DOWNLOAD_URL_PREFIX ?= https://releases.hashicorp.com/$(TERRAFORM_PROVIDER_DOWNLOAD_NAME)/$(TERRAFORM_PROVIDER_VERSION)
-export TERRAFORM_NATIVE_PROVIDER_BINARY ?= terraform-provider-null_v3.1.0_x5
+export TERRAFORM_NATIVE_PROVIDER_BINARY ?= $(TERRAFORM_PROVIDER_DOWNLOAD_NAME)_v$(TERRAFORM_PROVIDER_VERSION)
 export TERRAFORM_DOCS_PATH ?= docs/resources
 
 
@@ -54,7 +54,7 @@ GO_SUBDIRS += cmd internal apis
 # ====================================================================================
 # Setup Kubernetes tools
 
-KIND_VERSION = v0.15.0
+KIND_VERSION = v0.16.0
 UP_VERSION = v0.28.0
 UP_CHANNEL = stable
 UPTEST_VERSION = v0.5.0
@@ -93,7 +93,7 @@ fallthrough: submodules
 
 # NOTE(hasheddan): we force image building to happen prior to xpkg build so that
 # we ensure image is present in daemon.
-xpkg.build.upjet-provider-template: do.build.images
+xpkg.build.provider-mongodbatlas: do.build.images
 
 # NOTE(hasheddan): we ensure up is installed prior to running platform-specific
 # build steps in parallel to avoid encountering an installation race condition.
