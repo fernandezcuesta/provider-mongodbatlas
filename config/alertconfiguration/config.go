@@ -12,7 +12,6 @@ func Configure(p *config.Provider) {
 	p.AddResourceConfigurator("mongodbatlas_alert_configuration", func(r *config.Resource) {
 		r.ShortGroup = "mongodbatlas"
 		r.Kind = "AlertConfiguration"
-		r.ExternalName = config.ParameterAsIdentifier("project_id")
 		r.ExternalName.GetExternalNameFn = getExternalName
 		r.ExternalName.GetIDFn = getID
 	})
@@ -23,7 +22,7 @@ func getExternalName(tfstate map[string]any) (string, error) {
 	if !ok {
 		return "", errors.New("alert_configuration_id in tfstate cannot be empty")
 	}
-	return aid, nil
+	return aid.(string), nil
 }
 
 func getID(_ context.Context, externalName string, parameters map[string]any, providerConfig map[string]any) (string, error) {

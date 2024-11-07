@@ -10,7 +10,9 @@ import (
 
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/accesslistapikey"
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/advancedcluster"
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/alertconfiguration"
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/apikey"
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/archive"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
@@ -40,7 +42,9 @@ func GetProvider() *ujconfig.Provider {
 		// add custom config functions
 		accesslistapikey.Configure,
 		advancedcluster.Configure,
+		alertconfiguration.Configure,
 		apikey.Configure,
+		archive.Configure,
 	} {
 		configure(pc)
 	}

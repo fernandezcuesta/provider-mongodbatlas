@@ -10,6 +10,9 @@ package v1alpha3
 func (tr *AdvancedCluster) Hub() {}
 
 // Hub marks this type as a conversion hub.
+func (tr *AlertConfiguration) Hub() {}
+
+// Hub marks this type as a conversion hub.
 func (tr *Auditing) Hub() {}
 
 // Hub marks this type as a conversion hub.
