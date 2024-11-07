@@ -10,8 +10,9 @@ package apis
 import (
 	"k8s.io/apimachinery/pkg/runtime"
 
-	v1alpha3 "github.com/crossplane-contrib/provider-mongodbatlas/apis/advanced/v1alpha3"
-	v1alpha3mongodbatlas "github.com/crossplane-contrib/provider-mongodbatlas/apis/mongodbatlas/v1alpha3"
+	v1alpha3 "github.com/crossplane-contrib/provider-mongodbatlas/apis/mongodbatlas/v1alpha3"
+	v1alpha3org "github.com/crossplane-contrib/provider-mongodbatlas/apis/org/v1alpha3"
+	v1alpha3project "github.com/crossplane-contrib/provider-mongodbatlas/apis/project/v1alpha3"
 	v1alpha1 "github.com/crossplane-contrib/provider-mongodbatlas/apis/v1alpha1"
 	v1beta1 "github.com/crossplane-contrib/provider-mongodbatlas/apis/v1beta1"
 )
@@ -20,7 +21,8 @@ func init() {
 	// Register the types with the Scheme so the components can map objects to GroupVersionKinds and back
 	AddToSchemes = append(AddToSchemes,
 		v1alpha3.SchemeBuilder.AddToScheme,
-		v1alpha3mongodbatlas.SchemeBuilder.AddToScheme,
+		v1alpha3org.SchemeBuilder.AddToScheme,
+		v1alpha3project.SchemeBuilder.AddToScheme,
 		v1alpha1.SchemeBuilder.AddToScheme,
 		v1beta1.SchemeBuilder.AddToScheme,
 	)

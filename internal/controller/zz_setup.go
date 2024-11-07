@@ -9,9 +9,11 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
-	cluster "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/advanced/cluster"
+	advancedcluster "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/advancedcluster"
 	auditing "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/auditing"
-	clustermongodbatlas "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/cluster"
+	cluster "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/cluster"
+	accesslistapikey "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/org/accesslistapikey"
+	apikey "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/project/apikey"
 	providerconfig "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/providerconfig"
 )
 
@@ -19,9 +21,11 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
-		cluster.Setup,
+		advancedcluster.Setup,
 		auditing.Setup,
-		clustermongodbatlas.Setup,
+		cluster.Setup,
+		accesslistapikey.Setup,
+		apikey.Setup,
 		providerconfig.Setup,
 	} {
 		if err := setup(mgr, o); err != nil {

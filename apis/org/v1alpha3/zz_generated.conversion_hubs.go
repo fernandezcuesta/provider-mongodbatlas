@@ -7,4 +7,4 @@
 package v1alpha3
 
 // Hub marks this type as a conversion hub.
-func (tr *Cluster) Hub() {}
+func (tr *AccessListApiKey) Hub() {}

@@ -4,13 +4,17 @@ Copyright 2022 Upbound Inc.
 
 package config
 
-import "github.com/crossplane/upjet/pkg/config"
+import (
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/common"
+	"github.com/crossplane/upjet/pkg/config"
+)
 
 // ExternalNameConfigs contains all external name configurations for this
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
-	// Import requires using a randomly generated ID from provider: nl-2e21sda
-	"mongodbatlas_auditing": config.IdentifierFromProvider,
+	"mongodbatlas_access_list_api_key": config.ParameterAsIdentifier("org_id"),
+	"mongodbatlas_api_key":             config.ParameterAsIdentifier("org_id"),
+	"mongodbatlas_auditing":            config.IdentifierFromProvider,
 	"mongodbatlas_advanced_cluster": config.TemplatedStringAsIdentifier(
 		"name",
 		"{{ .parameters.project_id }}-{{ .externalName }}",
@@ -28,6 +32,8 @@ func ExternalNameConfigurations() config.ResourceOption {
 	return func(r *config.Resource) {
 		if e, ok := ExternalNameConfigs[r.Name]; ok {
 			r.ExternalName = e
+			// Potential breaking changes, bumping API version to v1alpha3.
+			r.Version = common.VersionV1Alpha3
 		}
 	}
 }

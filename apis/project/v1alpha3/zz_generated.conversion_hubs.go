@@ -7,10 +7,4 @@
 package v1alpha3
 
 // Hub marks this type as a conversion hub.
-func (tr *AdvancedCluster) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *Auditing) Hub() {}
-
-// Hub marks this type as a conversion hub.
-func (tr *Cluster) Hub() {}
+func (tr *ApiKey) Hub() {}

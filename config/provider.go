@@ -8,9 +8,9 @@ import (
 	// Note(turkenh): we are importing this to embed provider schema document
 	_ "embed"
 
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/accesslistapikey"
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/advancedcluster"
-	"github.com/crossplane-contrib/provider-mongodbatlas/config/auditing"
-	"github.com/crossplane-contrib/provider-mongodbatlas/config/cluster"
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/apikey"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
@@ -38,9 +38,9 @@ func GetProvider() *ujconfig.Provider {
 
 	for _, configure := range []func(provider *ujconfig.Provider){
 		// add custom config functions
+		accesslistapikey.Configure,
 		advancedcluster.Configure,
-		auditing.Configure,
-		cluster.Configure,
+		apikey.Configure,
 	} {
 		configure(pc)
 	}

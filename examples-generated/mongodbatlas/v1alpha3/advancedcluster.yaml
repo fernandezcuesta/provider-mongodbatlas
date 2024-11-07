@@ -1,8 +1,8 @@
-apiVersion: advanced.crossplane.io/v1alpha3
-kind: Cluster
+apiVersion: mongodbatlas.crossplane.io/v1alpha3
+kind: AdvancedCluster
 metadata:
   annotations:
-    meta.upbound.io/example-id: advanced/v1alpha3/cluster
+    meta.upbound.io/example-id: mongodbatlas/v1alpha3/advancedcluster
   labels:
     testing.upbound.io/example-name: test
   name: test
