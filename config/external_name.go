@@ -13,14 +13,23 @@ import (
 // provider.
 var ExternalNameConfigs = map[string]config.ExternalName{
 	"mongodbatlas_access_list_api_key": config.ParameterAsIdentifier("org_id"),
-	"mongodbatlas_api_key":             config.ParameterAsIdentifier("org_id"),
-	"mongodbatlas_alert_configuration": config.ParameterAsIdentifier("project_id"),
-	"mongodbatlas_online_archive":      config.ParameterAsIdentifier("project_id"),
-	"mongodbatlas_auditing":            config.IdentifierFromProvider,
 	"mongodbatlas_advanced_cluster": config.TemplatedStringAsIdentifier(
 		"name",
 		"{{ .parameters.project_id }}-{{ .externalName }}",
 	),
+	"mongodbatlas_alert_configuration":      config.ParameterAsIdentifier("project_id"),
+	"mongodbatlas_api_key":                  config.ParameterAsIdentifier("org_id"),
+	"mongodbatlas_auditing":                 config.IdentifierFromProvider,
+	"mongodbatlas_backup_compliance_policy": config.ParameterAsIdentifier("project_id"),
+	"mongodbatlas_cloud_backup_schedule": config.TemplatedStringAsIdentifier(
+		"cluster_name",
+		"{{ .parameters.project_id }}-{{ .externalName }}",
+	),
+	"mongodbatlas_cloud_backup_snapshot": config.TemplatedStringAsIdentifier(
+		"cluster_name",
+		"{{ .parameters.project_id }}-{{ .externalName }}",
+	),
+	"mongodbatlas_online_archive": config.ParameterAsIdentifier("project_id"),
 	"mongodbatlas_cluster": config.TemplatedStringAsIdentifier(
 		"name",
 		"{{ .parameters.project_id }}-{{ .externalName }}",

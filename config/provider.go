@@ -13,6 +13,9 @@ import (
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/alertconfiguration"
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/apikey"
 	"github.com/crossplane-contrib/provider-mongodbatlas/config/archive"
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/compliancepolicy"
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/schedule"
+	"github.com/crossplane-contrib/provider-mongodbatlas/config/snapshot"
 	ujconfig "github.com/crossplane/upjet/pkg/config"
 )
 
@@ -45,6 +48,9 @@ func GetProvider() *ujconfig.Provider {
 		alertconfiguration.Configure,
 		apikey.Configure,
 		archive.Configure,
+		compliancepolicy.Configure,
+		schedule.Configure,
+		snapshot.Configure,
 	} {
 		configure(pc)
 	}

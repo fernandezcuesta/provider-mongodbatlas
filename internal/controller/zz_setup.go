@@ -9,6 +9,9 @@ import (
 
 	"github.com/crossplane/upjet/pkg/controller"
 
+	compliancepolicy "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/backup/compliancepolicy"
+	schedule "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/backup/schedule"
+	snapshot "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/backup/snapshot"
 	advancedcluster "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/advancedcluster"
 	alertconfiguration "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/alertconfiguration"
 	auditing "github.com/crossplane-contrib/provider-mongodbatlas/internal/controller/mongodbatlas/auditing"
@@ -23,6 +26,9 @@ import (
 // the supplied manager.
 func Setup(mgr ctrl.Manager, o controller.Options) error {
 	for _, setup := range []func(ctrl.Manager, controller.Options) error{
+		compliancepolicy.Setup,
+		schedule.Setup,
+		snapshot.Setup,
 		advancedcluster.Setup,
 		alertconfiguration.Setup,
 		auditing.Setup,
