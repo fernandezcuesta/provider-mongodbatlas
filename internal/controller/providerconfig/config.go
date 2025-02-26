@@ -5,11 +5,12 @@ Copyright 2021 Upbound Inc.
 package providerconfig
 
 import (
+	ctrl "sigs.k8s.io/controller-runtime"
+
 	"github.com/crossplane/crossplane-runtime/pkg/event"
 	"github.com/crossplane/crossplane-runtime/pkg/reconciler/providerconfig"
 	"github.com/crossplane/crossplane-runtime/pkg/resource"
 	"github.com/crossplane/upjet/pkg/controller"
-	ctrl "sigs.k8s.io/controller-runtime"
 
 	"github.com/crossplane-contrib/provider-mongodbatlas/apis/v1beta1"
 )

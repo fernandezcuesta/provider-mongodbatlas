@@ -18,14 +18,15 @@ package main
 
 import (
 	"context"
+	"io"
+	"log"
 	"os"
 	"path/filepath"
 	"time"
 
-	"github.com/crossplane/crossplane-runtime/pkg/certificates"
-
 	"github.com/alecthomas/kingpin/v2"
 	xpv1 "github.com/crossplane/crossplane-runtime/apis/common/v1"
+	"github.com/crossplane/crossplane-runtime/pkg/certificates"
 	xpcontroller "github.com/crossplane/crossplane-runtime/pkg/controller"
 	"github.com/crossplane/crossplane-runtime/pkg/feature"
 	"github.com/crossplane/crossplane-runtime/pkg/logging"
@@ -66,12 +67,15 @@ func main() {
 		providerVersion  = app.Flag("terraform-provider-version", "Terraform provider version.").Required().Envar("TERRAFORM_PROVIDER_VERSION").String()
 
 		namespace                  = app.Flag("namespace", "Namespace used to set as default scope in default secret store config.").Default("crossplane-system").Envar("POD_NAMESPACE").String()
+		essTLSCertsPath            = app.Flag("ess-tls-cert-dir", "Path of ESS TLS certificates.").Envar("ESS_TLS_CERTS_DIR").String()
 		enableExternalSecretStores = app.Flag("enable-external-secret-stores", "Enable support for ExternalSecretStores.").Default("false").Envar("ENABLE_EXTERNAL_SECRET_STORES").Bool()
 		enableManagementPolicies   = app.Flag("enable-management-policies", "Enable support for Management Policies.").Default("true").Envar("ENABLE_MANAGEMENT_POLICIES").Bool()
-		essTLSCertsPath            = app.Flag("ess-tls-cert-dir", "Path of ESS TLS certificates.").Envar("ESS_TLS_CERTS_DIR").String()
 	)
 
 	kingpin.MustParse(app.Parse(os.Args[1:]))
+
+	log.Default().SetOutput(io.Discard)
+	ctrl.SetLogger(zap.New(zap.WriteTo(io.Discard)))
 
 	zl := zap.New(zap.UseDevMode(*debug))
 	log := logging.NewLogrLogger(zl.WithName("provider-mongodbatlas"))
@@ -81,6 +85,7 @@ func main() {
 		// logger when we're running in debug mode.
 		ctrl.SetLogger(zl)
 	}
+
 	// currently, we configure the jitter to be the 5% of the poll interval
 	pollJitter := time.Duration(float64(*pollInterval) * 0.05)
 	log.Debug("Starting", "sync-period", syncPeriod.String(), "poll-interval", pollInterval.String(), "poll-jitter", pollJitter, "max-reconcile-rate", *maxReconcileRate)
@@ -123,9 +128,14 @@ func main() {
 		Provider:       config.GetProvider(),
 		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithProcessReportInterval(*pollInterval), terraform.WithFeatures(featureFlags)),
 		SetupFn:        clients.TerraformSetupBuilder(*terraformVersion, *providerSource, *providerVersion),
+		WorkspaceStore: terraform.NewWorkspaceStore(log, terraform.WithFeatures(featureFlags)),
+		PollJitter:     pollJitter,
 	}
 
-	kingpin.FatalIfError(apis.AddToScheme(mgr.GetScheme()), "Cannot add MongoDBAtlas APIs to scheme")
+	if *enableManagementPolicies {
+		o.Features.Enable(features.EnableBetaManagementPolicies)
+		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
+	}
 
 	if *enableExternalSecretStores {
 		o.Features.Enable(features.EnableAlphaExternalSecretStores)
@@ -161,6 +171,6 @@ func main() {
 		log.Info("Beta feature enabled", "flag", features.EnableBetaManagementPolicies)
 	}
 
-	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup Template controllers")
+	kingpin.FatalIfError(controller.Setup(mgr, o), "Cannot setup MongoDBAtlas controllers")
 	kingpin.FatalIfError(mgr.Start(ctrl.SetupSignalHandler()), "Cannot start controller manager")
 }
